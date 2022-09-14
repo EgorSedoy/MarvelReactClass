@@ -1,9 +1,8 @@
 import { Component } from 'react';
-import Spinner from '../spinner/spinner';
+
+import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 import MarvelService from '../../services/MarvelService'
-
-
 
 import './randomChar.scss';
 import mjolnir from '../../resources/img/mjolnir.png';
@@ -30,16 +29,21 @@ class RandomChar extends Component {
         this.setState({ char, loading: false })
     }
 
-    updateChar = () => {
-        const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
-        this.marvelService
-            .getCharacter(id)
-            .then(this.onCharLoaded)
-            .catch(this.onError)
+    onCharLoading = (char) => {
+        this.setState({ char, loading: true })
     }
 
     onError = () => {
         this.setState({ loading: false, error: true })
+    }
+
+    updateChar = () => {
+        const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
+        this.onCharLoading();
+        this.marvelService
+            .getCharacter(id)
+            .then(this.onCharLoaded)
+            .catch(this.onError)
     }
 
     render() {
@@ -75,6 +79,9 @@ const View = ({ char }) => {
     const { name, description, thumbnail, homepage, wiki } = char;
     let imgStyle = { 'objectFit': 'cover' };
     if (thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg') {
+        imgStyle = { 'objectFit': 'contain' };
+    }
+    if (thumbnail === 'https://i.annihil.us/u/prod/marvel/i/mg/f/60/4c002e0305708.gif') {
         imgStyle = { 'objectFit': 'contain' };
     }
 
