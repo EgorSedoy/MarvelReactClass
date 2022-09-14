@@ -1,5 +1,4 @@
-
-
+import { v4 as uuidv4 } from 'uuid';
 class MarvelService {
    _apiBase = "https://gateway.marvel.com:443/v1/public/";
    _apiKey = "apikey=c5d6fc8b83116d92ed468ce36bac6c62"
@@ -28,8 +27,9 @@ class MarvelService {
 
    _transformCharacter = (char) => {
       return {
+         id: uuidv4(),
          name: char.name,
-         description: char.description ? `${char.description.slice(0, 210)}...` : 'There no description for this character',
+         description: char.description ? `${char.description.slice(0, 200)}...` : 'There no description for this character',
          thumbnail: char.thumbnail.path + '.' + char.thumbnail.extension,
          homepage: char.urls[0].url,
          wiki: char.urls[1].url
